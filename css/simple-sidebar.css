@@ -28,18 +28,87 @@ body {
   margin-left: 0;
 }
 
-@media (min-width: 768px) {
-  #sidebar-wrapper {
-    margin-left: 0;
+.navbar {
+    flex-wrap: nowrap;
+}
+
+@media (min-width: 960px) {
+    #sidebar-wrapper {
+      margin-left: 0;
+    }
+  
+    #page-content-wrapper {
+      min-width: 0;
+      width: 100%;
+    }
+  
+    #wrapper.toggled #sidebar-wrapper {
+      margin-left: -15rem;
+    }
+}
+
+.month {
+    margin-top: 1rem;
+    margin-left: 0.5rem;
+}
+
+
+#year {
+    width:80px;
+}
+
+#title {
+    /* margin-left: -100%;
+    margin-right: -100%; */
+    text-align: center;
+}
+
+.row {
+    margin: 0px;
+}
+
+.polaroid{
+    padding:0;
+}
+
+@media only screen and (max-width: 575px) {
+    .polaroid {
+        margin: 3px;
+    }
+    #calendar-body {
+        margin: 0.5rem;
+    }
   }
 
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 576px) {
+    .polaroid {
+        margin: 5px;
+    }
 
-  #wrapper.toggled #sidebar-wrapper {
-    margin-left: -15rem;
-  }
+    #calendar-body {
+        margin: 1rem;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .polaroid {
+        margin: 10px;
+    }
+    #calendar-body {
+        margin: 2rem;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    #calendar-body {
+        margin: 3rem;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 
 }

@@ -57,9 +57,11 @@ function showCalendar(month, year) {
 
 
     for (let k = 0; k<=month; k++){
+        let monthDiv = document.createElement("div")
+        monthDiv.classList.add("month")
         let monthTitle = document.createElement("h2")
         monthTitle.textContent = months[k]
-        calendar.appendChild(monthTitle)
+        monthDiv.appendChild(monthTitle)
 
         let monthPictures = document.createElement("div")
         let firstDay = ((new Date(year, k)).getDay() + 6)%7
@@ -110,7 +112,8 @@ function showCalendar(month, year) {
 
             monthPictures.appendChild(row); // appending each row into calendar body.
         }
-        calendar.appendChild(monthPictures)
+        monthDiv.appendChild(monthPictures)
+        calendar.appendChild(monthDiv)
     }
 }
 
