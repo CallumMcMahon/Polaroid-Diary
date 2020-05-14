@@ -72,26 +72,35 @@ function showCalendar(month, year) {
 
             //creating individual cells, filing them up with data.
             for (let j = 0; j < 7; j++) {
-                if (i === 0 && j < firstDay) {
+                if (i === 0 && j < firstDay || date > daysInMonth(k, year)) {
                     let polaroid = document.createElement("div");
-                    polaroid.classList.add("col");
+                    polaroid.classList.add("col", "polaroid");
                     row.appendChild(polaroid);
                 }
-                else if (date > daysInMonth(k, year) || (date >= currentDay+1 && year === currentYear && k === currentMonth )) {
+                else if (date >= currentDay+1 && year === currentYear && k === currentMonth ) {
                     break;
                 }
 
                 else {
                     let polaroid = document.createElement("div");
-                    polaroid.classList.add("col");
-                    polaroid.textContent = date;
+                    let rotation = String(Math.random()*5 - 2.5);  
+                    // polaroid.style.transform="rotate("+rotation+"deg)"
+                    polaroid.classList.add("col", "polaroid");
+
                     if (date === currentDay && year === currentYear && k === currentMonth) {
                         polaroid.classList.add("bg-info");
                     } // color today's date
+
                     let frame = document.createElement("img")
                     frame.classList.add("img-fluid")
                     frame.src = "resources/frame.jpg"
+
+                    // let image = document.createElement("img")
+                    // image.classList.add("picture")
+                    // image.src = "resources/frame.jpg"
+
                     polaroid.appendChild(frame)
+                    // polaroid.appendChild(image)
                     row.appendChild(polaroid);
                     date++;
                 }
