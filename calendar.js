@@ -5,9 +5,7 @@ currentYear = today.getFullYear();
 selectYear = document.getElementById("year");
 // selectMonth = document.getElementById("month");
 
-months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-showCalendar(currentMonth, currentYear)
+months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function chooseYear() {
     var yearElem = document.getElementById("year")
@@ -74,25 +72,44 @@ function showCalendar(month, year) {
 
             //creating individual cells, filing them up with data.
             for (let j = 0; j < 7; j++) {
-                if (i === 0 && j < firstDay || date > daysInMonth(k, year)) {
+                if ((i === 0 && j < firstDay) || date > daysInMonth(k, year) || (date >= currentDay+1 && year === currentYear && k === currentMonth )) {
                     let polaroid = document.createElement("div");
                     polaroid.classList.add("col", "polaroid");
                     row.appendChild(polaroid);
                 }
-                else if (date >= currentDay+1 && year === currentYear && k === currentMonth ) {
-                    break;
-                }
 
                 else {
                     let polaroid = document.createElement("div");
-                    let rotation = String(Math.random()*5 - 2.5);  
-                    // polaroid.style.transform="rotate("+rotation+"deg)"
+                    let isRotated = Math.random() > 0.8
+                    if (isRotated){
+                        let rotation = String(Math.random()*10 - 10/2);  
+                        polaroid.style.transform="rotate("+rotation+"deg)"
+                    }
                     polaroid.classList.add("col", "polaroid");
 
                     if (date === currentDay && year === currentYear && k === currentMonth) {
                         polaroid.classList.add("bg-info");
                     } // color today's date
 
+                    if (typeof jsonData.moods?.[year]?.[k+1]?.[date] !== "undefined"){
+                        let dayText = jsonData.moods?.[year]?.[k+1]?.[date]?.entries?.[0]?.optionalDescription.split(/[\r?\n]{2,}/);
+                        
+                        let dayAnnotation = document.createElement("div");
+                        dayAnnotation.classList.add("dayAnnotation")
+
+                        let dayDate = document.createElement("div");
+                        dayDate.innerText = String(date)+":   "
+                        dayDate.classList.add("dayDate")
+
+                        let dayTitle = document.createElement("div");
+                        dayTitle.innerText = dayText[0]
+                        dayTitle.classList.add("dayTitle")
+
+                        dayAnnotation.appendChild(dayDate)
+                        dayAnnotation.appendChild(dayTitle)
+                        polaroid.appendChild(dayAnnotation)
+                        // dayText.forEach(item => console.log(item))
+                    }
                     let frame = document.createElement("img")
                     frame.classList.add("img-fluid")
                     frame.src = "resources/frame.jpg"
@@ -101,16 +118,17 @@ function showCalendar(month, year) {
                     // image.classList.add("picture")
                     // image.src = "resources/frame.jpg"
 
+                    
                     polaroid.appendChild(frame)
                     // polaroid.appendChild(image)
                     row.appendChild(polaroid);
                     date++;
                 }
-
-
             }
-
             monthPictures.appendChild(row); // appending each row into calendar body.
+            if (date >= currentDay+1 && year === currentYear && k === currentMonth ) {
+                break;
+            }
         }
         monthDiv.appendChild(monthPictures)
         calendar.appendChild(monthDiv)
@@ -121,4 +139,16 @@ function showCalendar(month, year) {
 // check how many days in a month code from https://dzone.com/articles/determining-number-days-month
 function daysInMonth(iMonth, iYear) {
     return 32 - new Date(iYear, iMonth, 32).getDate();
+}
+
+let jsonData;
+
+$.getJSON("Moodflow Backup.json", function(json) {
+    jsonData = json; // this will show the info it in firebug console
+    test()
+    showCalendar(currentMonth, currentYear)
+});
+
+function test() {
+    console.log(jsonData.moods[2020][5])
 }
