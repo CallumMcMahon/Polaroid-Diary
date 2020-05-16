@@ -98,7 +98,7 @@ function showCalendar(month, year) {
                         dayAnnotation.classList.add("dayAnnotation")
 
                         let dayDate = document.createElement("div");
-                        dayDate.innerText = String(date)+":   "
+                        dayDate.innerText = String(date)+":"
                         dayDate.classList.add("dayDate")
 
                         let dayTitle = document.createElement("div");
@@ -152,3 +152,6 @@ $.getJSON("Moodflow Backup.json", function(json) {
 function test() {
     console.log(jsonData.moods[2020][5])
 }
+$(document).ready(function() {
+    $(".dayTitle").fitText(1);
+});
