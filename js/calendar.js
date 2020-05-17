@@ -152,6 +152,6 @@ $.getJSON("Moodflow Backup.json", function(json) {
 function test() {
     console.log(jsonData.moods[2020][5])
 }
-$(document).ready(function() {
+$(window).on('load', function() {
     $(".dayTitle").fitText(1);
 });
