@@ -39,7 +39,7 @@ function jump() {
     showCalendar(currentMonth, currentYear);
 }
 
-function showCalendar(month, year) {
+function showCalendar(month, year, jsonData) {
 
     
 
@@ -63,7 +63,6 @@ function showCalendar(month, year) {
 
         let monthPictures = document.createElement("div")
         let firstDay = ((new Date(year, k)).getDay() + 6)%7
-        console.log(firstDay)
         let date = 1;
         for (let i = 0; i < 6; i++) {
             // creates a table row
@@ -80,6 +79,7 @@ function showCalendar(month, year) {
 
                 else {
                     let polaroid = document.createElement("div");
+                    polaroid.id = String(year) + "-" + String(k+1).padStart(2, "0") + "-" + String(date).padStart(2, "0")
                     let isRotated = Math.random() > 0.8
                     if (isRotated){
                         let rotation = String(Math.random()*10 - 10/2);  
@@ -114,13 +114,11 @@ function showCalendar(month, year) {
                     frame.classList.add("img-fluid")
                     frame.src = "resources/frame.jpg"
 
-                    // let image = document.createElement("img")
-                    // image.classList.add("picture")
-                    // image.src = "resources/frame.jpg"
-
+                    let image = document.createElement("img")
+                    image.classList.add("picture")
                     
                     polaroid.appendChild(frame)
-                    // polaroid.appendChild(image)
+                    polaroid.appendChild(image)
                     row.appendChild(polaroid);
                     date++;
                 }
@@ -141,17 +139,43 @@ function daysInMonth(iMonth, iYear) {
     return 32 - new Date(iYear, iMonth, 32).getDate();
 }
 
-let jsonData;
-
+let jsonText;
 $.getJSON("Moodflow Backup.json", function(json) {
-    jsonData = json; // this will show the info it in firebug console
-    test()
-    showCalendar(currentMonth, currentYear)
+    jsonText = json; // this will show the info it in firebug console
+    test(jsonText)
+    showCalendar(currentMonth, currentYear, jsonText)
 });
 
-function test() {
-    console.log(jsonData.moods[2020][5])
+function test(jsonFile) {
+    console.log(jsonFile)
 }
 $(window).on('load', function() {
     $(".dayTitle").fitText(1);
 });
+
+let jsonImg;
+$.getJSON("https://api.onedrive.com/v1.0/shares/u!aHR0cHM6Ly8xZHJ2Lm1zL2YvcyFBbF82UEhpR3ViWlVoUHNxSHdLVXRQdE4zWGhCM0E=/root?expand=children", function(json) {
+    jsonImg = json; // this will show the info it in firebug console
+    test(jsonImg.children[0])
+    populateImages(jsonImg)
+});
+
+function populateImages(json){
+    json.children.forEach(function(obj){
+        if (obj.file.mimeType === "image/jpeg"){
+            try {
+                console.log(obj.file.mimeType);
+            link = obj["@content.downloadUrl"]
+            console.log(link);
+            date = obj.photo.takenDateTime.substring(0, 10);
+            console.log(date);
+            $("#"+date +"> .picture")[0].src = link
+            // polaroid = document.getElementById(date);
+            // polaroid.lastChild.src = link
+            } catch (error) {
+                console.log(error)
+            }
+            
+        }
+    })
+}
